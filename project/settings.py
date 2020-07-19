@@ -68,11 +68,8 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'rest',
         'CLIENT': {
-            'host': 'mongodb+srv://goldy:goldy@cluster0.v9koc.mongodb.net/rest?retryWrites=true&w=majority',
-            'port': 27017,
-            'username': 'goldy',
-            'password': 'goldy',
-            'authSource': 'admin'
+            'host': 'localhost',
+            'port': 27017
         }
     }
 }
