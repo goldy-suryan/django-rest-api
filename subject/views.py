@@ -10,33 +10,49 @@ from rest_framework import status
 
 @api_view(['GET'])
 def getSubjects(request):
-    subjects = SubjectModel.objects.all()
-    serial = SubjectSerializer(subjects, many=True)
-    return Response(serial.data)
+    try:
+        subjects = SubjectModel.objects.all()
+        serial = SubjectSerializer(subjects, many=True)
+        return Response(serial.data)
+    except Exception as e:
+        return Response(str(e), status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 def getSubject(request, id):
-    id = ObjectId(id)
-    subjects = SubjectModel.objects.get(pk=id)
-    serial = SubjectSerializer(subjects, many=False)
-    return Response(serial.data)
+    try:
+        id = ObjectId(id)
+        subjects = SubjectModel.objects.get(pk=id)
+        serial = SubjectSerializer(subjects, many=False)
+        return Response(serial.data)
+    except SubjectModel.DoesNotExist:
+        return Response('Subject Does not Exists', status = status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response(str(e), status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['PUT'])
 def updateSubject(request, id):
-    id = ObjectId(id)
-    subject = SubjectModel.objects.get(pk=id)
-    subject_serializer = SubjectSerializer(subject, data=request.data)
-    if subject_serializer.is_valid():
-        subject_serializer.save()
-        return Response(subject_serializer.data, status=status.HTTP_200_OK)
-    return Response(subject_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        id = ObjectId(id)
+        subject = SubjectModel.objects.get(pk=id)
+        subject_serializer = SubjectSerializer(subject, data=request.data)
+        if subject_serializer.is_valid():
+            subject_serializer.save()
+            return Response(subject_serializer.data, status=status.HTTP_200_OK)
+        return Response(subject_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except SubjectModel.DoesNotExist:
+        return Response('Subject Does not exists', status = status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response(str(e), status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['POST'])
 def addSubject(request):
-    subject_serializer = SubjectSerializer(data=request.data)
-    if(subject_serializer.is_valid()):
-        subject_serializer.save()
-        return Response(subject_serializer.data, status=status.HTTP_200_OK)
-    return Response(subject_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        subject_serializer = SubjectSerializer(data=request.data)
+        if(subject_serializer.is_valid()):
+            subject_serializer.save()
+            return Response(subject_serializer.data, status=status.HTTP_200_OK)
+        return Response(subject_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response(str(e), status = status.HTTP_500_INTERNAL_SERVER_ERROR)
