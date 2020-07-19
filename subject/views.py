@@ -51,8 +51,8 @@ def addSubject(request):
     try:
         subject_serializer = SubjectSerializer(data=request.data)
         if(subject_serializer.is_valid()):
-            subject_serializer.save()
-            return Response(subject_serializer.data, status=status.HTTP_200_OK)
+            subject_serializer.create(request.data)
+            return Response('created successfully', status=status.HTTP_200_OK)
         return Response(subject_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response(str(e), status = status.HTTP_500_INTERNAL_SERVER_ERROR)
