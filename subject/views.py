@@ -56,3 +56,16 @@ def addSubject(request):
         return Response(subject_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response(str(e), status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['DELETE'])
+def removeSubject(request, id):
+    try:
+        id = ObjectId(id)
+        subject = SubjectModel.objects.get(pk=id)
+        subject.delete()
+        return Response('Subject deleted successfully', status = 204)
+    except SubjectModel.DoesNotExist:
+        return Response('Subject Does not exists', status = status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response(str(e), status = status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -14,5 +14,6 @@ def getPaths(request):
         'subjects': '/api/subjects',
         'add subject': '/api/subjects/add',
         'single subject': '/api/subjects/<id>',
-        'udpate subject': '/api/subjects/<id>/update'
+        'udpate subject': '/api/subjects/<id>/update',
+        'remove subject': '/api/subjects/<id>/delete'
     })
